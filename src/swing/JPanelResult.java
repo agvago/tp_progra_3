@@ -27,17 +27,11 @@ public class JPanelResult extends JPanel {
 	
 	public void reset(){
 		Controller.getInstance().getResultTable().truncate();
+		txtPuntaje.setText("puntaje");
 	}
 	
-	public boolean calc(){
-		
-		if(!Controller.txtFieldIsInt(txtPuntaje, true)){
-			txtPuntaje.setBorder(new MatteBorder(2, 2, 2, 2, Color.RED));
-			return false;
-		}
-		txtPuntaje.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 255)));
-		
-		return true;
+	public void loadResult(){
+		txtPuntaje.setText("max " + String.valueOf(Controller.getInstance().getMaxGain()));
 	}
 	
 	/**

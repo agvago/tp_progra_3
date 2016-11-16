@@ -34,8 +34,13 @@ public class MainWindow {
 	}
 	
 	public void showJPanelResult(){
+		panelResult.loadResult();
 		CardLayout c = (CardLayout)(panel.getLayout());
 		c.show(panel, "panelResult");
+	}
+	
+	public void actionCargarDemo(){
+		Controller.getInstance().loadDemo();
 	}
 	
 	/**
@@ -93,5 +98,15 @@ public class MainWindow {
 		});
 		mntmNew.setFont(new Font("Arial", Font.PLAIN, 12));
 		mnNewMenu.add(mntmNew);
+		
+		JMenuItem mntmCargarDemo = new JMenuItem("Cargar Demo");
+		mntmCargarDemo.setFont(new Font("Arial", Font.PLAIN, 12));
+		mntmCargarDemo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionCargarDemo();
+			}
+		});
+		mnNewMenu.add(mntmCargarDemo);
+		
 	}
 }

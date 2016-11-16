@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.Vector;
 
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 //esta clase me permite guardar todas las variables del la aplicacion
 public class Controller {
@@ -16,6 +15,7 @@ public class Controller {
 	private Font fontAwesome = null;
 	private ItemTable itemsTable = null;
 	private ItemTable resultsTable = null;
+	private int knapsackMaxGain = 0;
 
 	private Controller() {
 		super();
@@ -46,7 +46,7 @@ public class Controller {
 	
 	public ItemTable getItemsTable(){
 		if(itemsTable==null){
-			itemsTable = new ItemTable();
+			itemsTable = new ItemTable();			
 		}
 		return itemsTable;
 	}	
@@ -57,6 +57,13 @@ public class Controller {
 		}
 		return resultsTable;
 	}	
+	
+	public void loadDemo(){
+		getItemsTable().addRow("Reloj", 50);
+		getItemsTable().addRow("Mouse", 38);
+		getItemsTable().addRow("Vasos", 65);
+		getItemsTable().addRow("Secador de Pelo", 85);
+	}
 	
 	public static Boolean txtFieldIsInt(JTextField field, boolean required){
 		 try{
@@ -78,45 +85,34 @@ public class Controller {
 		
 		return true;
 	}
-	
-	
 		
-    public int calc(int capacity){
+    public void calc(int capacity){
     	
-    	DefaultTableModel dtm = (DefaultTableModel) itemsTable.getModel();
-	    int nRow = dtm.getRowCount();
-	    Vector<Tuple<Integer,Integer>> sequence = new Vector<Tuple<Integer,Integer>>();
+    	//obtengo los elementos de la tabla de items
+    	Vector<Object> points = this.itemsTable.colToVector(1);
+    	Vector<Object> items = this.itemsTable.colToVector(0);
 	    
-	    sequence.add(new Tuple<Integer, Integer>(0, 0));
-	    for (int i = 0 ; i < nRow ; i++){
-	    	sequence.add(new Tuple<Integer, Integer>((Integer)dtm.getValueAt(i,1), (Integer)dtm.getValueAt(i,1)));
-	    } 	
+	    Vector<Tuple<Integer,Integer>> sequence = new Vector<Tuple<Integer,Integer>>();
+	    for (int i = 0 ; i < points.size() ; i++){
+	    	sequence.add(new Tuple<Integer, Integer>((Integer)points.elementAt(i),(Integer)points.elementAt(i)));
+	    }   	
     	
-    	return mochila(sequence, capacity);
+    	Knapsack k = new Knapsack(sequence, capacity);
+    	this.knapsackMaxGain = k.run();
+    	
+ 
+    	Vector<Integer> indexes = k.resultIndexes();
+    	
+    	if(!this.resultsTable.isEmtpy())
+    		this.resultsTable.truncate();
+    
+    	for (Integer i : indexes) {
+			this.resultsTable.addRow((String)items.elementAt(i-1), (Integer)points.elementAt(i-1));
+		}
+
     }
-        
-	private int mochila(Vector<Tuple<Integer,Integer>> sequence, int capacity){
-		int matrix[][] = new int[sequence.size()+1][capacity+1];
-		
-		for(int i=1;i<=capacity;i++){
-			matrix[0][i] = 0;
-		}
-		
-		for(int j=0;j<=sequence.size();j++){
-			matrix[j][0] = 0;
-		}
-		
-		for(int j=1;j<sequence.size();j++){
-			for(int i=1;i<=capacity;i++){
-				if(i-sequence.get(j).weight <0){
-					matrix[j][i] = matrix[j-1][i];
-				}else{					
-					matrix[j][i] = Math.max(sequence.get(j).gain + matrix[j-1][i-sequence.get(j).weight], matrix[j-1][i]);
-				}
-			}
-		}
-		
-		return matrix[sequence.size()-1][capacity];
-	}
-	
+    
+    public int getMaxGain(){
+    	return this.knapsackMaxGain;
+    }
 }

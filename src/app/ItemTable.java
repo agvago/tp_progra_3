@@ -2,8 +2,8 @@ package app;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Vector;
 
-import javax.swing.DefaultRowSorter;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -15,10 +15,7 @@ public class ItemTable extends JTable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@SuppressWarnings("rawtypes")
-	private DefaultRowSorter sorter;
-
-	@SuppressWarnings("rawtypes")
+	
 	public ItemTable() {
 		super();
 		this.setModel(new DefaultTableModel(
@@ -31,9 +28,6 @@ public class ItemTable extends JTable {
 		this.setShowVerticalLines(false);	
 		this.setFont(new Font("Arial", Font.PLAIN, 14));
 		this.setAutoCreateRowSorter(true);
-        // DefaultRowSorter has the sort() method
-        sorter = ((DefaultRowSorter)this.getRowSorter());
-        sorter.setSortable(0, false);
 	}
 	
 	public void addRow(String description, int points){
@@ -49,13 +43,32 @@ public class ItemTable extends JTable {
 	   }
 	}
 	
+	public Object getValueAt(int row, int col){
+		DefaultTableModel dtm = (DefaultTableModel) this.getModel();
+		return dtm.getValueAt(row,col);
+	}
+	
+	public int getRowCount(){
+		DefaultTableModel dtm = (DefaultTableModel) this.getModel();
+		return dtm.getRowCount();
+	}
+	
+	public Vector<Object> colToVector(int col){
+		Vector<Object> column = new Vector<Object>();
+		int nRow = getRowCount();
+		
+		for (int i = 0 ; i < nRow ; i++){
+			column.addElement(getValueAt(i,col));
+	    }
+		
+		return column;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void sort(){
 		@SuppressWarnings("rawtypes")
 		ArrayList list = new ArrayList();
         list.add( new RowSorter.SortKey(1, SortOrder.ASCENDING) );
-        sorter.setSortKeys(list);
-        sorter.sort();
 	}
 	
 	public void truncate(){
