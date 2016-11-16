@@ -40,7 +40,13 @@ public class MainWindow {
 	}
 	
 	public void actionCargarDemo(){
+		resetAll();
 		Controller.getInstance().loadDemo();
+	}
+	
+	public void resetAll(){
+		panelMain.reset();
+		panelResult.reset();
 	}
 	
 	/**
@@ -92,8 +98,7 @@ public class MainWindow {
 		JMenuItem mntmNew = new JMenuItem("Nuevo");
 		mntmNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				panelMain.reset();
-				panelResult.reset();
+				resetAll();
 			}
 		});
 		mntmNew.setFont(new Font("Arial", Font.PLAIN, 12));
