@@ -58,11 +58,30 @@ public class Controller {
 		return resultsTable;
 	}	
 	
-	public void loadDemo(){
-		getItemsTable().addRow("Reloj", 50);
-		getItemsTable().addRow("Mouse", 38);
-		getItemsTable().addRow("Vasos", 65);
-		getItemsTable().addRow("Secador de Pelo", 85);
+	public void loadDemo(int demoIndex){
+		
+		switch (demoIndex) {
+		case 2:
+			getItemsTable().addRow("1", 100);
+			getItemsTable().addRow("2", 200);
+			getItemsTable().addRow("3", 50);
+			getItemsTable().addRow("4", 25);
+			getItemsTable().addRow("5", 10);
+			getItemsTable().addRow("6", 5);
+			getItemsTable().addRow("7", 1000);
+			getItemsTable().addRow("8", 650);
+			getItemsTable().addRow("9", 450);
+			getItemsTable().addRow("10", 550);
+			getItemsTable().addRow("11", 36);
+			getItemsTable().addRow("12", 28);
+			break;
+		default:
+			getItemsTable().addRow("Reloj", 50);
+			getItemsTable().addRow("Mouse", 38);
+			getItemsTable().addRow("Vasos", 65);
+			getItemsTable().addRow("Secador de Pelo", 85);
+			break;
+		}		
 	}
 	
 	public static Boolean txtFieldIsInt(JTextField field, boolean required){

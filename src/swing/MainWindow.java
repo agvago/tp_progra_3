@@ -22,6 +22,7 @@ public class MainWindow {
 	private JPanelMain panelMain = new JPanelMain(this);
 	private JPanelAddItem panelAddItem = new JPanelAddItem(this);
 	private JPanelResult panelResult = new JPanelResult(this);
+	private final JMenuItem mntmCargarDemo_1 = new JMenuItem("Cargar Demo 2");
 	
 	public void showJPanelAddItem(){
 		CardLayout c = (CardLayout)(panel.getLayout());
@@ -39,9 +40,9 @@ public class MainWindow {
 		c.show(panel, "panelResult");
 	}
 	
-	public void actionCargarDemo(){
+	public void actionCargarDemo(int demoIndex){
 		resetAll();
-		Controller.getInstance().loadDemo();
+		Controller.getInstance().loadDemo(demoIndex);
 	}
 	
 	public void resetAll(){
@@ -108,10 +109,18 @@ public class MainWindow {
 		mntmCargarDemo.setFont(new Font("Arial", Font.PLAIN, 12));
 		mntmCargarDemo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				actionCargarDemo();
+				actionCargarDemo(1);
 			}
 		});
 		mnNewMenu.add(mntmCargarDemo);
+		mntmCargarDemo_1.setFont(new Font("Arial", Font.PLAIN, 12));
+		mntmCargarDemo_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionCargarDemo(2);
+			}
+		});
+		
+		mnNewMenu.add(mntmCargarDemo_1);
 		
 	}
 }
